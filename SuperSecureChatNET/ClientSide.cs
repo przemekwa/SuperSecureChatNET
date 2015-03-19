@@ -8,18 +8,16 @@ using System.Threading.Tasks;
 
 namespace SuperSecureChatNET
 {
-    class ClientSide
+    class ClientSide : TcpIpBase
     {
-        private IPAddress IpClient; 
-
-        public ClientSide(string ip)
+        public ClientSide(string ip, int port) 
+            : base(ip, port)
         {
-            this.IpClient = Helper.GetIpFromString(ip);
         }
 
-        public ClientSide(IPAddress ip)
+        public ClientSide(IPAddress ip, int port)
+            : base(ip, port)
         {
-            this.IpClient = ip;
         }
 
         public void ReadLineFromConsole()
@@ -38,9 +36,9 @@ namespace SuperSecureChatNET
             {
                 var clientSocket = new System.Net.Sockets.TcpClient();
 
-                Console.WriteLine("Wysłanie wiadomośći od {0} ",IpClient);
+                Console.WriteLine("Wysłanie wiadomośći od {0} ",this.Ip);
 
-                clientSocket.Connect(IpClient, 1235);
+                clientSocket.Connect(this.Ip, this.Port);
 
                 NetworkStream serverStream = clientSocket.GetStream();
 

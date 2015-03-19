@@ -8,30 +8,29 @@ using System.Threading.Tasks;
 
 namespace SuperSecureChatNET
 {
-    internal class ServerSide
+    internal class ServerSide : TcpIpBase
     {
-        private IPAddress IpServer; 
-
-        public ServerSide(string ip)
+        public ServerSide(string ip, int port) 
+            : base(ip,port)
         {
-            this.IpServer = Helper.GetIpFromString(ip);
         }
 
-        public ServerSide(IPAddress ip)
+        public ServerSide(IPAddress ip, int port)
+            : base(ip, port)
         {
-            this.IpServer = ip;
         }
 
         public void ServerTask()
         {
-            Console.WriteLine("Start serwera o ip {0}", this.IpServer);
+
+            Console.WriteLine("Start serwera o ip {0}", this.Ip);
 
             this.SerwerWorker();
         }
 
         private void SerwerWorker()
         {
-            TcpListener serverSocket = new TcpListener(IPAddress.Loopback, 1235);
+            TcpListener serverSocket = new TcpListener(this.Ip, this.Port);
 
             TcpClient clientSocket = default(TcpClient);
 
@@ -50,7 +49,7 @@ namespace SuperSecureChatNET
 
                 dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("$"));
 
-                Console.WriteLine(" >> Data from {0}: {1} ", IpServer, dataFromClient);
+                Console.WriteLine(" >> Data from {0}: {1} ", this.Ip, dataFromClient);
             }
 
         }

@@ -10,6 +10,7 @@ namespace SuperSecureChatNET
 {
     class Program
     {
+        const int PORT = 3000;
         public static void Main(string[] args)
         {
             Console.WriteLine(">> Start SuperSecureChatNet");
@@ -18,13 +19,13 @@ namespace SuperSecureChatNET
 
             receiverIP = Helper.GetMyIp();
 
-            var server = new ServerSide(receiverIP);
+            var server = new ServerSide(Helper.GetMyIp(), PORT);
             
             var serwerThread = new Task(server.ServerTask);
             
             serwerThread.Start();
 
-            var client = new ClientSide(receiverIP);
+            var client = new ClientSide(receiverIP, PORT);
 
             client.ReadLineFromConsole();
         }
